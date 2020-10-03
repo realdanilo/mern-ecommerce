@@ -18,7 +18,7 @@ function App() {
             <Route exact path="/" render={(rp) => <HomeScreen />} />
             <Route
               exact
-              path="/:id"
+              path="/product/:id"
               render={(rp) => <ProductScreen {...rp} />}
             />
             <Route path="/" render={(rp) => <h1>Wrong Route</h1>} />
