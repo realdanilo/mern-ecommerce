@@ -12,7 +12,7 @@ const ProductScreen = ({ match }) => {
       setProduct(data);
     };
     loadData();
-  }, []);
+  }, [match]);
 
   return (
     <>
@@ -63,7 +63,7 @@ const ProductScreen = ({ match }) => {
               <ListGroup.Item>
                 <Button
                   type="button"
-                  disable={product.countInStock == 0}
+                  disable={product.countInStock === 0}
                   className="btn-block"
                 >
                   Add To Cart
