@@ -1,27 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
-import axios from "axios";
+
+import Loader from "../components/Loader.js";
+import Message from "../components/Message.js";
+// reducers/actions
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../actions/productActions.js";
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products } = productList;
   useEffect(() => {
-    const loadData = async () => {
-      const { data } = await axios.get("/api/products");
-      setProducts(data);
-    };
-    loadData();
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
+
   return (
     <>
       <h1>Lates Product</h1>
-      <Row>
-        {products.map((p, i) => (
-          <Col key={i} sm="12" md="6" lg="4" xl="3">
-            <Product product={p} />
-          </Col>
-        ))}
-      </Row>
+      {loading && <Loader />}
+      {error && <Message variant="error">{error}</Message>}
+      {!error && (
+        <>
+          <Row>
+            {products.map((p, i) => (
+              <Col key={i} sm="12" md="6" lg="4" xl="3">
+                <Product product={p} />
+              </Col>
+            ))}
+          </Row>
+        </>
+      )}
     </>
   );
 };
