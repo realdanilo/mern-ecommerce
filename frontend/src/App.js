@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
+import CartScreen from "./screens/CartScreen";
 // materials
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -20,6 +21,11 @@ function App() {
               exact
               path="/product/:id"
               render={(rp) => <ProductScreen {...rp} />}
+            />
+            <Route
+              exact
+              path="/cart/:id?"
+              render={(rp) => <CartScreen {...rp} />}
             />
             <Route path="/" render={(rp) => <h1>Wrong Route</h1>} />
           </Switch>
