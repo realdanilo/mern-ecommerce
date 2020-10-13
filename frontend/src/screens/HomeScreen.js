@@ -16,9 +16,9 @@ const HomeScreen = () => {
     dispatch(listProducts());
   }, [dispatch]);
 
+  
   return (
     <>
-      <h1>Lates Product</h1>
       {loading && <Loader />}
       {error && <Message variant="error">{error}</Message>}
       {!error && (

@@ -9,13 +9,17 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
+//components
 import Rating from "../components/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails } from "../actions/productActions.js";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
+
+
+
 const ProductScreen = ({ match, history }) => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
   const { loading, error, product } = useSelector(
     (state) => state.productDetails
@@ -112,7 +116,7 @@ const ProductScreen = ({ match, history }) => {
                   <ListGroup.Item>
                     <Button
                       type="button"
-                      disable={product.countInStock === 0}
+                      disable={product.countInStock === 0 }
                       className="btn-block"
                       onClick={addToCartHandler}
                     >
