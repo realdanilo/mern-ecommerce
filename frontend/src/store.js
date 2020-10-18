@@ -8,14 +8,16 @@ import {
 } from "./reducers/productListReducers.js";
 import { cartReducer } from "./reducers/cartReducers.js";
 
-import {userLoginReducer,userRegister} from "./reducers/userReducers.js"
+import {userLoginReducer,userRegister,userDetails, userUpdateProfile} from "./reducers/userReducers.js"
 
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
   user:userLoginReducer,
-  userRegister: userRegister
+  userRegister: userRegister,
+  userDetails:userDetails,
+  userUpdateProfile:userUpdateProfile
 });
 
 const cartItemsFromStorage = JSON.parse(localStorage.getItem("cartItems")) || [];
