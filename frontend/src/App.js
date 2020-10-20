@@ -8,7 +8,8 @@ import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen"
-import ShippingScreen from "./screens/ShippingScreen"
+import ShippingScreen from "./screens/ShippingScreen" 
+import PaymentScreen from "./screens/PaymentScreen" 
 // materials
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -50,6 +51,11 @@ function App() {
               exact
               path="/shipping"
               render={(rp) => <ShippingScreen {...rp} />}
+            />
+            <Route
+              exact
+              path="/payment"
+              render={(rp) => <PaymentScreen {...rp} />}
             />
             <Route path="/" render={() => <h1>Wrong Route</h1>} />
           </Switch>
