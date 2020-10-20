@@ -22,9 +22,13 @@ const reducer = combineReducers({
 
 const cartItemsFromStorage = JSON.parse(localStorage.getItem("cartItems")) || [];
 const userInfoFromStorage = JSON.parse(localStorage.getItem("userInfo")) || null
+const cartShippingAddressFromStorage = JSON.parse(localStorage.getItem("shippingAddress")) || {}
 
 const initialState = {
-  cart: {cartItems:cartItemsFromStorage},
+  cart: {
+    cartItems:cartItemsFromStorage,
+    shippingAddress:cartShippingAddressFromStorage
+  },
   user: {userInfo:userInfoFromStorage}
 };
 const middleware = [thunk];

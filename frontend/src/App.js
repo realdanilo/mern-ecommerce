@@ -8,6 +8,7 @@ import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen"
+import ShippingScreen from "./screens/ShippingScreen"
 // materials
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -44,6 +45,11 @@ function App() {
               exact
               path="/profile"
               render={(rp) => <ProfileScreen {...rp} />}
+            />
+            <Route
+              exact
+              path="/shipping"
+              render={(rp) => <ShippingScreen {...rp} />}
             />
             <Route path="/" render={() => <h1>Wrong Route</h1>} />
           </Switch>
