@@ -1,12 +1,14 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import {Button, Row, Col, ListGroup, Image, Card} from "react-bootstrap"
 import {useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"
 import ChekoutSteps from "../components/CheckoutSteps"
 import CheckoutSteps from '../components/CheckoutSteps'
 import {Link} from "react-router-dom"
+import {createOrder} from "../actions/orderActions"
 
-const PlaceOrderScreen = () => {
+
+const PlaceOrderScreen = ({history}) => {
     const cart = useSelector(st => st.cart)
 // calculate prices
     const addDecimals = num => {
@@ -14,14 +16,36 @@ const PlaceOrderScreen = () => {
     }
     cart.itemsPrice = cart.cartItems.reduce((prev,cur)=> prev + cur.price * cur.qty , 0)
 
-    cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 25)
+    cart.shippingPrice = Number(addDecimals(cart.itemsPrice > 100 ? 0 : 25))
 
-    cart.tax = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
+    cart.taxPrice = Number(addDecimals((0.15 * cart.itemsPrice).toFixed(2)))
 
-    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.tax)).toFixed(2)
+    cart.totalPrice = Number((cart.itemsPrice + cart.shippingPrice + cart.taxPrice).toFixed(2))
+
+    const dispatch = useDispatch()
+
+    const {order,success,error}= useSelector(st => st.orderCreate)
+   
+   useEffect(()=>{
+       if(success){
+           history.push(`/order/${order._id}`)
+       }
+   },[history,success])
 
     const placeOrderHandler = e => {
-        console.log("placing order")
+        e.preventDefault()
+
+        dispatch(createOrder({
+            orderItems:cart.cartItems,
+            shippingAddress:cart.shippingAddress,
+            paymentMethod:cart.paymentMethod,
+            itemsPrice:cart.itemsPrice,
+            shippingPrice:cart.shippingPrice,
+            taxPrice:cart.taxPrice,
+            totalPrice:cart.totalPrice
+        }))
+       
+        
     }
     let  itemsCheckOut = cart.cartItems.map(item => (
         <ListGroup.Item key={item.product}>
@@ -92,7 +116,7 @@ const PlaceOrderScreen = () => {
                                     <Col>
                                     Tax
                                     </Col>
-                                    <Col>${cart.tax}</Col>
+                                    <Col>${cart.taxPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
@@ -103,9 +127,14 @@ const PlaceOrderScreen = () => {
                                     <Col>${cart.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
+
+                            <ListGroup.Item>
+                                {error && <Message variant="danger">{error}</Message>}
+                            </ListGroup.Item>
+
                             <ListGroup.Item>
                                 <Button type="button" className="btn-block" 
-                                disapled={cart.cartItems.length === 0}
+                                disabled={cart.cartItems.length === 0}
                                 onClick={placeOrderHandler}>Place Order</Button>
                             </ListGroup.Item>
                         </ListGroup>

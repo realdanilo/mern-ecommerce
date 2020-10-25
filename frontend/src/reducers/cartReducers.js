@@ -15,7 +15,7 @@ export const cartReducer = (state = { cartItems: [], shippingAddress:{} }, actio
         return { ...state, cartItems: [...state.cartItems, item] };
       }
     case "CART_REMOVE_ITEM":
-      return {...state, cartItems: state.cartItems.filter(x=> x.product != action.payload)}
+      return {...state, cartItems: state.cartItems.filter(x=> x.product !== action.payload)}
     case "CART_SAVE_SHIPPING_ADDRESS":
       return {...state, shippingAddress: action.payload}
       case "SAVE_PAYMENT_METHOD":

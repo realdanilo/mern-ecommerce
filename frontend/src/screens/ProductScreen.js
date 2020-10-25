@@ -116,7 +116,7 @@ const ProductScreen = ({ match, history }) => {
                   <ListGroup.Item>
                     <Button
                       type="button"
-                      disable={product.countInStock === 0 }
+                      disable={product.countInStock === 0 ? "true" : "false" }
                       className="btn-block"
                       onClick={addToCartHandler}
                     >

@@ -24,7 +24,6 @@ const CartScreen = ({match, location,history}) => {
   }
   const checkOutHandler = ()=>{
     history.push("/login?redirect=shipping")
-    console.log("checkout")
   }
   return <Row>
     <Col md={8}>
