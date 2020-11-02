@@ -11,6 +11,7 @@ import ProfileScreen from "./screens/ProfileScreen"
 import ShippingScreen from "./screens/ShippingScreen" 
 import PaymentScreen from "./screens/PaymentScreen" 
 import PlaceOrderScreen from "./screens/PlaceOrderScreen" 
+import OrderScreen from "./screens/OrderScreen" 
 // materials
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -63,6 +64,7 @@ function App() {
               path="/placeorder"
               render={(rp) => <PlaceOrderScreen {...rp} />}
             />
+            <Route exact path="/order/:id" render={(rp)=> <OrderScreen {...rp} />} />
             <Route path="/" render={() => <h1>Wrong Route</h1>} />
           </Switch>
         </Container>
