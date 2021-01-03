@@ -50,13 +50,13 @@ const OrderScreen = ({match}) => {
    },[dispatch, order,orderId, successPay])
 
    const successPaymentHandler = (paymentResult)=>{
-        console.log(paymentResult)
+        //console.log(paymentResult)
         dispatch(payOrder(orderId, paymentResult))
         // if(paymentResult || paymentResult.status =="COMPLETED"){
         //     window.location.reload()
         // }
    }
-   console.log("loading")
+   //console.log("loading")
     return loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : (
         <>
         <h1>Order: {order._id}</h1>

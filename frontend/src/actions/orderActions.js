@@ -70,3 +70,24 @@ export const payOrder = (orderId,paymentResult)=> async(dispatch, getState)=>{
         
     }
 }
+export const listMyOrders = ()=> async(dispatch, getState)=>{
+    try {
+        dispatch({type:"ORDER_LIST_MY_REQUEST"})
+        const {userInfo:{token}}= getState().user
+        const config = {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        }
+        //sent data and receive userInfo
+        const {data}= await axios.get(`/api/orders/myorders`, config)
+        dispatch({type:"ORDER_LIST_MY_SUCCESS", payload:data})
+
+    } catch (error) {
+        dispatch({type:"ORDER_LIST_MY_FAIL", payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message})
+        
+    }
+}
