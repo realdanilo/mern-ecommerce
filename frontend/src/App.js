@@ -12,6 +12,8 @@ import ShippingScreen from "./screens/ShippingScreen"
 import PaymentScreen from "./screens/PaymentScreen" 
 import PlaceOrderScreen from "./screens/PlaceOrderScreen" 
 import OrderScreen from "./screens/OrderScreen" 
+import UserListScreen from "./screens/UserListSreen"
+// import UserListScreen from "./screens/UserListScreen" 
 // materials
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -63,6 +65,11 @@ function App() {
               exact
               path="/placeorder"
               render={(rp) => <PlaceOrderScreen {...rp} />}
+            />
+            <Route
+              exact
+              path="/admin/userlist"
+              render={(rp) => <UserListScreen {...rp} />}
             />
             <Route exact path="/order/:id" render={(rp)=> <OrderScreen {...rp} />} />
             <Route path="/" render={() => <h1>Wrong Route</h1>} />
