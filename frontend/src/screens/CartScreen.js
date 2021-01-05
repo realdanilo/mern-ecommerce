@@ -28,7 +28,7 @@ const CartScreen = ({match, location,history}) => {
   return <Row>
     <Col md={8}>
     <h1>Shopping Cart</h1>
-    {cartItems.length == 0 ? <Message> Your cart is empty <Link to="/">Go Back</Link></Message> : (
+    {cartItems.length === 0 ? <Message> Your cart is empty <Link to="/">Go Back</Link></Message> : (
       <ListGroup variant="flush">
         {cartItems.map(item => (
           <ListGroup.Item key={item.product}>
@@ -77,7 +77,7 @@ const CartScreen = ({match, location,history}) => {
           ${cartItems.reduce((prev,cur)=> prev+ cur.qty * cur.price, 0).toFixed(2)}
           </ListGroup.Item>
           <ListGroup.Item>
-            <Button type="button" className="btn-block" disabled={cartItems.length ==0} onClick={checkOutHandler}>Proceed To CheckOut</Button>
+            <Button type="button" className="btn-block" disabled={cartItems.length ===0} onClick={checkOutHandler}>Proceed To CheckOut</Button>
           </ListGroup.Item>
         </ListGroup>
       </Card>
