@@ -10,10 +10,15 @@ const UserListScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const { loading, error, users }  = useSelector((state) => state.userList)
-
-    useEffect(()=>{
+  const { userInfo } = useSelector((st)=> st.user)
+    
+  useEffect(()=>{
+    if(userInfo && userInfo.isAdmin){
         dispatch(listUsers())
-    },[dispatch])
+        }else{
+          history.push(`/login`)
+        }
+    },[dispatch, history])
 
 //   useEffect(() => {
 //     if (userInfo && userInfo.isAdmin) {
