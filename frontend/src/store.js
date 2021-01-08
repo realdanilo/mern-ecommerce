@@ -19,7 +19,7 @@ const reducer = combineReducers({
   userDetails:userDetails,
   userUpdateProfile:userUpdateProfile,
   userList: userListReducer,
-  useDelete:userDeleteReducer,
+  userDelete:userDeleteReducer,
   orderCreate:orderCreateReducer,
   orderDetails:orderDetailsReducer,
   orderPay:orderPayReducer,

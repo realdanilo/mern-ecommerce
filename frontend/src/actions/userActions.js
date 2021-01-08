@@ -133,6 +133,7 @@ export const deleteUser = (id)=> async(dispatch, getState)=>{
             }
         }
         //sent data and receive userInfo
+        console.log(token)
         await axios.delete(`/api/users/${id}`, config)
         dispatch({type:"USER_DELETE_SUCCESS"})
 

@@ -12,11 +12,8 @@ const UserListScreen = ({ history }) => {
   const { loading, error, users }  = useSelector((state) => state.userList)
   const { userInfo } = useSelector((st)=> st.user)
   const userDelete = useSelector((st)=> st.userDelete)
-  let successDelete;
- if(userDelete !==undefined){
-   successDelete = userDelete.successDelete
- }
-    
+  const { success: successDelete } = userDelete
+
     useEffect(()=>{
       if(userInfo && userInfo.isAdmin){
           dispatch(listUsers())
@@ -26,8 +23,9 @@ const UserListScreen = ({ history }) => {
     },[dispatch, history, successDelete, userInfo])
 
     const deleteHandler = (id) => {
-     
-        dispatch(deleteUser(id))
+     if(window.confirm("Are you sure?")){
+       dispatch(deleteUser(id))
+     }
      
     }
 
@@ -73,7 +71,7 @@ const UserListScreen = ({ history }) => {
                   <Button
                     variant='danger'
                     className='btn-sm'
-                    onClick={deleteHandler(user._id)}
+                    onClick={()=> deleteHandler(user._id)}
                   >
                     <i className='fas fa-trash'></i>
                   </Button>
