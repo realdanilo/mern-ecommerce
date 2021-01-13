@@ -52,3 +52,24 @@ export const deleteProductById = (id)=> async(dispatch, getState)=>{
       
   }
 }
+export const createProduct = ()=> async(dispatch, getState)=>{
+  try {
+      dispatch({type:"PRODUCT_CREATE_REQUEST"})
+      const {userInfo:{token}}= getState().user
+      const config = {
+          headers:{
+              Authorization: `Bearer ${token}`
+          }
+      }
+      //empty {} because we are not sending any data, need empty brackets
+      const {data} = await axios.post(`/api/products`, {},config)
+      dispatch({type:"PRODUCT_CREATE_SUCCESS", payload:data})
+
+  } catch (error) {
+      dispatch({type:"PRODUCT_CREATE_FAIL", payload:
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message})
+      
+  }
+}
