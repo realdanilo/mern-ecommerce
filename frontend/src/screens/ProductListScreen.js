@@ -24,7 +24,7 @@ const ProductListScreen = ({ history }) => {
       }
 
       if(successCreate && createdProduct){
-        history.push(`/admin/products/${createdProduct._id}/edit`)
+        history.push(`/admin/product/${createdProduct._id}/edit`)
       }else{
         dispatch(listProducts())
       }
@@ -49,7 +49,7 @@ const ProductListScreen = ({ history }) => {
            <h1>Products</h1>
         </Col>
         <Col className="text-right">
-            <Button clasName="text-right" onClick={createProductHandler}>
+            <Button className="text-right" onClick={createProductHandler}>
                 Create Product <i className="fas fa-plus"/>
             </Button>
         </Col>
