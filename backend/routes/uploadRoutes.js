@@ -23,11 +23,14 @@ function checkFileType(file,cb){
         cb("Images Only")
     }
 }
-const upload = multer({storage, fileFilter:function(req,file,cb){
-    checkFileType(file,cb)
-}})
+const upload = multer({
+    storage, 
+    fileFilter:function(req,file,cb){
+        checkFileType(file,cb)
+    }}
+)
 //  api/upload
-router.post("/", upload.single("image"),(res,res)=>{
-    res.send(`/${req.file.path}`)
+router.post("/", upload.single("image"),(req,res)=>{
+    res.send(`/${req.file.path.replace("\\","/")}`)
 })
 export default router

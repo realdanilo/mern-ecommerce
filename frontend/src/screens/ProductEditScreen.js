@@ -6,6 +6,7 @@ import Message from "../components/Message.js"
 import Loader from "../components/Loader.js"
 import {listProductDetails,updateProduct } from "../actions/productActions.js"
 import FormContainer from "../components/FormContainer.js"
+import axios from "axios"
 
 const ProductEditScreen = ({match, history}) => {
     const productId = match.params.id 
@@ -16,6 +17,7 @@ const ProductEditScreen = ({match, history}) => {
     const [category,setCategory] = useState("")
     const [countInStock,setCountInStock] = useState(0)
     const [description,setDescription] = useState("")
+    const [uploading, setUploading] = useState(false)
 
     const dispatch  = useDispatch()
     const {loading, error, product} = useSelector(st=> st.productDetails)
@@ -57,6 +59,28 @@ const ProductEditScreen = ({match, history}) => {
        
     }
 
+    const uploadFileHandler = async(e)=>{
+        //array 
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append("image", file)
+        setUploading(true)
+
+        try{
+            const config={
+                headers:{
+                    "Content-Type":"multipart/form-data"
+                }
+            }
+            const {data }= await axios.post("/api/upload",formData,config)
+            //path
+            setImage(data)
+            setUploading(false)
+        }catch(e){
+            console.error(error)
+            setUploading(false)
+        }
+    }
     return (
         <>
         <Link to="/admin/productlist" className="btn btn-light my-3">
@@ -82,6 +106,9 @@ const ProductEditScreen = ({match, history}) => {
                         <Form.Label>Image URL</Form.Label>
                         <Form.Control type="text" placeholder="Enter Image"  value={image} required={true} onChange={(e)=> setImage(e.target.value)}></Form.Control>
                     </Form.Group>
+                    <Form.File id="image-file" label="Choose File" custom onChange={uploadFileHandler}>
+                    </Form.File>
+                    {uploading && <Loader/>}
                     <Form.Group controlId="brand">
                         <Form.Label>Brand</Form.Label>
                         <Form.Control type="text" placeholder="Enter Brand"  value={brand} required={true} onChange={(e)=> setBrand(e.target.value)}></Form.Control>

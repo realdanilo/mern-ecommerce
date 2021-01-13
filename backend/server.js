@@ -26,7 +26,7 @@ app.get("/api/config/paypal", (req,res)=>{
 
 //make upload file accessible as static
 const __dirname = path.resolve()
-app.use("/upload", express.static(path.join(__dirname, "/uploads")))
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
 
 // middleware for Errors
 app.use(notFound);
