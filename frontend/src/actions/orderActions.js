@@ -79,12 +79,33 @@ export const listMyOrders = ()=> async(dispatch, getState)=>{
                 Authorization: `Bearer ${token}`
             }
         }
-        //sent data and receive userInfo
+        //sent data 
         const {data}= await axios.get(`/api/orders/myorders`, config)
         dispatch({type:"ORDER_LIST_MY_SUCCESS", payload:data})
 
     } catch (error) {
         dispatch({type:"ORDER_LIST_MY_FAIL", payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message})
+        
+    }
+}
+export const listOrders = ()=> async(dispatch, getState)=>{
+    try {
+        dispatch({type:"ORDER_LIST_REQUEST"})
+        const {userInfo:{token}}= getState().user
+        const config = {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        }
+        //sent data 
+        const {data}= await axios.get(`/api/orders`, config)
+        dispatch({type:"ORDER_LIST_SUCCESS", payload:data})
+
+    } catch (error) {
+        dispatch({type:"ORDER_LIST_FAIL", payload:
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message})

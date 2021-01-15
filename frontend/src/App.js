@@ -16,6 +16,7 @@ import UserListScreen from "./screens/UserListSreen"
 import UserEditScreen from "./screens/UserEditScreen"
 import ProductListScreen from "./screens/ProductListScreen"
 import ProductEditScreen from "./screens/ProductEditScreen"
+import OrderListScreen from "./screens/OrderListScreen"
 // materials
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -87,6 +88,11 @@ function App() {
               exact
               path="/admin/product/:id/edit"
               render={(rp) => <ProductEditScreen {...rp} />}
+            />
+            <Route
+              exact
+              path="/admin/orderlist"
+              render={(rp) => <OrderListScreen {...rp} />}
             />
             <Route exact path="/order/:id" render={(rp)=> <OrderScreen {...rp} />} />
             <Route path="/" render={() => <h1>Wrong Route</h1>} />
