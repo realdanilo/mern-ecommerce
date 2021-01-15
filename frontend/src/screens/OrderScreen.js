@@ -1,10 +1,10 @@
 import React,{useState, useEffect} from 'react'
-import { Row, Col, ListGroup, Image, Card} from "react-bootstrap"
+import { Row, Col, ListGroup, Image, Card, Button} from "react-bootstrap"
 import {useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"
 import Loader from '../components/Loader'
 import {Link} from "react-router-dom"
-import {getOrderDetails, payOrder} from "../actions/orderActions"
+import {getOrderDetails, payOrder, deliverOrder} from "../actions/orderActions"
 import axios from "axios"
 import {PayPalButton} from "react-paypal-button-v2"
 
@@ -22,6 +22,9 @@ const OrderScreen = ({match}) => {
 
     const orderPay = useSelector(st =>st.orderDetails)
     const {loading:loadingPay, success:successPay} = orderPay
+    const { userInfo } = useSelector((st)=> st.user)
+    const {loading:loadingDeliver,error:errorDeliver,success:successDeliver} = useSelector((st)=> st.orderDeliver)
+
 
    useEffect(()=>{
     const addPaypalScript = async() =>{
@@ -35,8 +38,9 @@ const OrderScreen = ({match}) => {
         }
         document.body.appendChild(script)
     }
-    if(!order || successPay || order._id !== orderId){
+    if(!order || successPay || order._id !== orderId || successDeliver){
         dispatch({type:"ORDER_PAY_RESET"})
+        dispatch({type:"ORDER_DELIVER_RESET"})
         dispatch(getOrderDetails(orderId))
     }else if(!order.isPaid){
         if(!window.paypal){
@@ -46,16 +50,18 @@ const OrderScreen = ({match}) => {
         }
     }
 
-   },[dispatch, order,orderId, successPay])
+   },[dispatch, order,orderId, successPay, successDeliver])
 
    const successPaymentHandler = (paymentResult)=>{
-        //console.log(paymentResult)
         dispatch(payOrder(orderId, paymentResult))
         // if(paymentResult || paymentResult.status =="COMPLETED"){
         //     window.location.reload()
         // }
    }
-   //console.log("loading")
+
+   const deliverHandler = ()=>{
+       dispatch(deliverOrder(order))
+   }
     return loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : (
         <>
         <h1>Order: {order._id}</h1>
@@ -155,6 +161,16 @@ const OrderScreen = ({match}) => {
                                     )}
                                 </ListGroup.Item>
                             )}
+                            {loadingDeliver && <Loader/>}
+                            {
+                                userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        <Button type="button" className="btn btn-block" onClick={deliverHandler}>
+                                            Mark As Delivered
+                                        </Button>
+                                    </ListGroup.Item>
+                                )
+                            }
 
                         </ListGroup>
                     </Card>
