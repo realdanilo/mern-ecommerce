@@ -95,3 +95,25 @@ export const updateProduct = (product)=> async(dispatch, getState)=>{
       
   }
 }
+export const createProductReview = (productId, review)=> async(dispatch, getState)=>{
+  try {
+      dispatch({type:"PRODUCT_REVIEW_REQUEST"})
+      const {userInfo:{token}}= getState().user
+      const config = {
+          headers:{
+            "Content-Type":"application/json",
+              Authorization: `Bearer ${token}`
+          }
+      }
+      //
+      await axios.post(`/api/products/${productId}/reviews`,review, config)
+      dispatch({type:"PRODUCT_REVIEW_SUCCESS"})
+
+  } catch (error) {
+      dispatch({type:"PRODUCT_REVIEW_FAIL", payload:
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message})
+      
+  }
+}

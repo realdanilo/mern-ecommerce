@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import {getProductById, getProducts, deleteProductById, updateProduct, createProduct} from "../controllers/productController.js"
+import {getProductById, getProducts, deleteProductById, updateProduct, createProduct, createProductReview} from "../controllers/productController.js"
 import {protect,admin} from "../middleware/auth.js"
 
 //description: fetch all products
@@ -18,4 +18,7 @@ router.route("/:id")
     .delete(protect,admin, deleteProductById)
     .put(protect,admin, updateProduct)
 
+router.route("/:id/reviews").post(protect, createProductReview)
+
 export default router;
+ 
