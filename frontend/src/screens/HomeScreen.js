@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
+import {Link} from "react-router-dom"
 import Product from "../components/Product";
+import Meta from "../components/Meta";
 
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
@@ -23,9 +25,10 @@ const HomeScreen = ({match}) => {
   
   return (
     <>
+      <Meta/>
       {loading && <Loader />}
       {error && <Message variant="error">{error}</Message>}
-      {!keyword && <ProductCarousel/>}
+      {!keyword ?  <ProductCarousel/>: <Link to="/" className="btn btn-light">Go Back</Link>}
       {!error && (
         <>
           <Row>

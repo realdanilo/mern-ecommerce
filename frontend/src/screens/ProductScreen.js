@@ -11,6 +11,8 @@ import {
 } from "react-bootstrap";
 //components
 import Rating from "../components/Rating";
+import Meta from "../components/Meta";
+
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails , createProductReview} from "../actions/productActions.js";
 import Loader from "../components/Loader.js";
@@ -59,6 +61,7 @@ const ProductScreen = ({ match, history }) => {
       {error && <Message variant="error">{error}</Message>}
       {!error && (
         <>
+          <Meta title={product.name}/>
           <Link to="/" className="btn btn-light py-3">
             Go Back
           </Link>
