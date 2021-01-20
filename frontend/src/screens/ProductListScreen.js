@@ -4,12 +4,14 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Paginate from '../components/Paginate'
 import { listProducts , deleteProductById, createProduct} from '../actions/productActions'
 
-const ProductListScreen = ({ history }) => {
+const ProductListScreen = ({ history , match}) => {
   const dispatch = useDispatch()
+  const pageNumber = match.params.pageNumber ||1
 
-  const { loading, error, products }  = useSelector((state) => state.productList)
+  const { loading, error, products , page, pages}  = useSelector((state) => state.productList)
   //check if user is logged-in, to make sure token (to delete middleware) 
   const { userInfo } = useSelector((st)=> st.user)
   
@@ -26,10 +28,11 @@ const ProductListScreen = ({ history }) => {
       if(successCreate && createdProduct){
         history.push(`/admin/product/${createdProduct._id}/edit`)
       }else{
-        dispatch(listProducts())
+        //empty string to get all products
+        dispatch(listProducts("", pageNumber))
       }
         
-    },[dispatch, history,  userInfo,successDelete, successCreate, createdProduct])
+    },[dispatch, history,  userInfo,successDelete, successCreate, createdProduct, pageNumber])
 
     const deleteHandler = (id) => {
      if(window.confirm("Are you sure?")){
@@ -63,6 +66,7 @@ const ProductListScreen = ({ history }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
+        <>
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
             <tr>
@@ -106,6 +110,8 @@ const ProductListScreen = ({ history }) => {
             ))}
           </tbody>
         </Table>
+        <Paginate pages={pages} page={page} isAdmin={true}/>
+        </>
       )}
     </>
   )

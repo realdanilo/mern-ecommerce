@@ -29,6 +29,8 @@ function App() {
         <Container>
           <Switch>
             <Route exact path="/" render={(rp) => <HomeScreen {...rp}/>} />
+            <Route exact path="/page/:pageNumber" render={(rp) => <HomeScreen {...rp}/>} />
+            <Route exact path="/search/:keyword/page/:pageNumber" render={(rp) => <HomeScreen {...rp}/>} />
             <Route
               exact
               path="/product/:id"
@@ -82,6 +84,11 @@ function App() {
             <Route
               exact
               path="/admin/productlist"
+              render={(rp) => <ProductListScreen {...rp} />}
+            />
+            <Route
+              exact
+              path="/admin/productlist/:pageNumber"
               render={(rp) => <ProductListScreen {...rp} />}
             />
             <Route
