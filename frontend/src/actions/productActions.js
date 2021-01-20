@@ -15,6 +15,21 @@ export const listProducts = (keyword="", pageNumber="") => async (dispatch) => {
     });
   }
 };
+export const getTopProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: "PRODUCT_TOP_REQUEST" });
+    const { data } = await axios.get(`/api/products/top`);
+    dispatch({ type: "PRODUCT_TOP_SUCCESS", payload: data });
+  } catch (e) {
+    dispatch({
+      type: "PRODUCT_TOP_FAIL",
+      payload:
+        e.response && e.response.data.message
+          ? e.response.data.message
+          : e.message,
+    });
+  }
+};
 
 export const listProductDetails = (id) => async (dispatch) => {
   try {

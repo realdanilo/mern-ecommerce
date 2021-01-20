@@ -5,6 +5,7 @@ import Product from "../components/Product";
 import Loader from "../components/Loader.js";
 import Message from "../components/Message.js";
 import Paginate from "../components/Paginate.js";
+import ProductCarousel from "../components/ProductCarousel.js";
 // reducers/actions
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions.js";
@@ -24,6 +25,7 @@ const HomeScreen = ({match}) => {
     <>
       {loading && <Loader />}
       {error && <Message variant="error">{error}</Message>}
+      {!keyword && <ProductCarousel/>}
       {!error && (
         <>
           <Row>
