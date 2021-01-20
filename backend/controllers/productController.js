@@ -6,7 +6,7 @@ import asyncHandler from "express-async-handler";
 //route: GET /api/products
 //access: public
 const getProducts = asyncHandler(async (req,res)=>{
-  const pageSize = 2 // # of products show at each page
+  const pageSize = 3 // # of products show at each page
   const page = Number(req.query.pageNumber) || 1
 
   //get queries (keyword)
@@ -20,7 +20,7 @@ const getProducts = asyncHandler(async (req,res)=>{
     }
   } : {}
 
-  const count = await Product.count({...keyword}) // count documents that mathc this object
+  const count = await Product.countDocuments({...keyword}) // count documents that mathc this object
 
   //spread operation.
     const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page-1));
