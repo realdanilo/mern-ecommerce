@@ -8,10 +8,17 @@ import userRoutes from "./routes/user.js"
 import orderRoutes from "./routes/order.js"
 import uploadRoutes from "./routes/uploadRoutes.js"
 import { notFound, errorHandler } from "./middleware/error.js";
+import morgan from "morgan"
+
 
 // always at the top dotenv
 dotenv.config();
 const app = express();
+
+if(process.env.NODE_ENV === "development"){
+  app.use(morgan("dev"))
+}
+
 connectDB();
 app.use(express.json())
 

@@ -9,7 +9,7 @@ import axios from "axios"
 import {PayPalButton} from "react-paypal-button-v2"
 
 
-const OrderScreen = ({match}) => {
+const OrderScreen = ({match, history}) => {
     const [sdk, setSdk] = useState(false)
 
     const orderId = match.params.id 
@@ -17,16 +17,26 @@ const OrderScreen = ({match}) => {
     const orderDetails= useSelector(st => st.orderDetails)
     const {loading, error, order} = orderDetails
     if(!loading){
-        order.itemsPrice = order.orderItems.reduce((prev,cur)=> prev + cur.price * cur.qty , 0)
+         //   Calculate prices
+         const addDecimals = (num) => {
+        return (Math.round(num * 100) / 100).toFixed(2)
+      }
+        //order.itemsPrice = order.orderItems.reduce((prev,cur)=> prev + cur.price * cur.qty , 0)
+        order.itemsPrice = addDecimals(
+            order.orderItems.reduce((acc,item)=> acc+item.price * item.qty,0)
+        )
     }
 
     const orderPay = useSelector(st =>st.orderDetails)
     const {loading:loadingPay, success:successPay} = orderPay
     const { userInfo } = useSelector((st)=> st.user)
-    const {loading:loadingDeliver,error:errorDeliver,success:successDeliver} = useSelector((st)=> st.orderDeliver)
+    const {loading:loadingDeliver,success:successDeliver} = useSelector((st)=> st.orderDeliver)
 
 
    useEffect(()=>{
+       if(!userInfo){
+           history.push('/login')
+       }
     const addPaypalScript = async() =>{
         const {data:clientId} = await axios.get("/api/config/paypal")
         const script = document.createElement("script")
@@ -50,7 +60,7 @@ const OrderScreen = ({match}) => {
         }
     }
 
-   },[dispatch, order,orderId, successPay, successDeliver])
+   },[dispatch, order,orderId, successPay, successDeliver, history, userInfo])
 
    const successPaymentHandler = (paymentResult)=>{
         dispatch(payOrder(orderId, paymentResult))
@@ -79,7 +89,7 @@ const OrderScreen = ({match}) => {
                             <strong>Address: </strong> 
                             {order.shippingAddress.address},{order.shippingAddress.city},{order.shippingAddress.postalCode},{order.shippingAddress.country}   
                             </p>     
-                            {order.isDeliver ? <Message variant="success">Deliver on {order.deliverAt}</Message>: <Message variant="danger">Not Deliver</Message>}                   
+                            {order.isDelivered ? <Message variant="success">Deliver on {order.deliverAt}</Message>: <Message variant="danger">Not Deliver</Message>}                   
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <h2>Payment Method: </h2>
@@ -92,26 +102,26 @@ const OrderScreen = ({match}) => {
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <h2>Order Items</h2>
-    {order.orderItems.length === 0 ? <Message>Order is empty</Message> : <ListGroup>
-        {order.orderItems.map(item => (
-        <ListGroup.Item key={item.product}>
-            <Row>
-                <Col md={1}>
-                    <Image fluid rounded src={item.image} alt={item.name}/>
-                </Col>
+                            {order.orderItems.length === 0 ? <Message>Order is empty</Message> : <ListGroup>
+                                {order.orderItems.map(item => (
+                                <ListGroup.Item key={item.product}>
+                                    <Row>
+                                        <Col md={1}>
+                                            <Image fluid rounded src={item.image} alt={item.name}/>
+                                        </Col>
 
-                <Col>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
-                    
-                </Col>
+                                        <Col>
+                                            <Link to={`/product/${item.product}`}>{item.name}</Link>
+                                            
+                                        </Col>
 
-                <Col md={4}>
-                    {item.qty} x {item.price} = ${item.qty * item.price}
-                </Col>
-            </Row>
-        </ListGroup.Item>
-    ))}
-        </ListGroup>  }
+                                        <Col md={4}>
+                                            {item.qty} x {item.price} = ${item.qty * item.price}
+                                        </Col>
+                                    </Row>
+                                </ListGroup.Item>
+                            ))}
+                         </ListGroup>  }
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
@@ -163,7 +173,7 @@ const OrderScreen = ({match}) => {
                             )}
                             {loadingDeliver && <Loader/>}
                             {
-                                userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                                     <ListGroup.Item>
                                         <Button type="button" className="btn btn-block" onClick={deliverHandler}>
                                             Mark As Delivered
