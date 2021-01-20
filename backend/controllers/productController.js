@@ -6,7 +6,19 @@ import asyncHandler from "express-async-handler";
 //route: GET /api/products
 //access: public
 const getProducts = asyncHandler(async (req,res)=>{
-    const products = await Product.find();
+  //get queries (keyword)
+  //use regex >> ie   Find "iph" for iphones, partial search
+  // i >> case insensitive
+  //empty brackets, gets all
+  const keyword = req.query.keyword ? {
+    name:{
+      $regex: req.query.keyword,
+      $options:"i"
+    }
+  } : {}
+
+  //spread operation.
+    const products = await Product.find({...keyword});
     res.json(products);
 })
 

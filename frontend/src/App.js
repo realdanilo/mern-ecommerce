@@ -28,7 +28,7 @@ function App() {
       <main className="py-3">
         <Container>
           <Switch>
-            <Route exact path="/" render={() => <HomeScreen />} />
+            <Route exact path="/" render={(rp) => <HomeScreen {...rp}/>} />
             <Route
               exact
               path="/product/:id"
@@ -95,6 +95,7 @@ function App() {
               render={(rp) => <OrderListScreen {...rp} />}
             />
             <Route exact path="/order/:id" render={(rp)=> <OrderScreen {...rp} />} />
+            <Route path="/search/:keyword" render={(rp) => <HomeScreen {...rp}/>} />
             <Route path="/" render={() => <h1>Wrong Route</h1>} />
           </Switch>
         </Container>
