@@ -28,7 +28,8 @@ const ProfileScreen = ({location, history}) => {
         if(!userInfo){
             history.push("/login")
         }else{
-            if(!user || !user.name){
+            if(!user || !user.name || success){
+                dispatch({type:"USER_UPDATE_PROFILE_RESET"})
                 dispatch(getUserDetails("profile"))
                 dispatch(listMyOrders())
             }else{
@@ -37,7 +38,7 @@ const ProfileScreen = ({location, history}) => {
             }
         }
 
-    },[history, userInfo, dispatch, user])
+    },[history, userInfo, dispatch, user, success])
     const submitHandler =(e)=>{
         e.preventDefault()
         // dispatch register

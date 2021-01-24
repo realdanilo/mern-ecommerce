@@ -93,6 +93,9 @@ export const updateUserProfile = (user)=> async(dispatch, getState)=>{
         //sent data and receive userInfo
         const {data}= await axios.put(`/api/users/profile`,user, config)
         dispatch({type:"USER_UPDATE_PROFILE_SUCCESS", payload:data})
+        //when name is updated, show in navbar solution
+        dispatch({type:"USER_LOGIN_SUCCESS", payload:data})
+        localStorage.setItem("userInfo", JSON.stringify(data))
 
     } catch (error) {
         dispatch({type:"USER_UPDATE_PROFILE_FAIL", payload:
